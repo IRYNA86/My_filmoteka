@@ -1,0 +1,30 @@
+.list {
+  list-style: none;
+}
+
+.containers {
+  width: 100%;
+  padding: 15px;
+  margin: 0 auto;
+}
+.galleries,
+.list_film {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.galleries {
+  margin-left: -10px;
+  padding-top: 60px;
+  justify-content: center;
+}
+.list_film_item {
+  margin-top: 10px;
+  margin-left: 10px;
+  min-width: 150px;
+  flex-basis: calc((100% - 40px) / 3);
+  border: 2px solid rgb(241, 238, 238);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
