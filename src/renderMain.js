@@ -1,5 +1,6 @@
 import fetchFavoritesMovies from './renderFavoriteFilm';
-
+import Pagination from 'tui-pagination';
+import 'tui-pagination/dist/tui-pagination.css';
 import arrayGenres from './arreyGenges';
 
 import preloader from './preloader';
@@ -7,6 +8,36 @@ import preloader from './preloader';
 const refs = {
   gallery: document.querySelector('.list_film'),
 };
+
+const container = document.querySelector('.tui-pagination');
+  
+let pagination = new Pagination(
+  container, {
+  totalItems: 0,
+    page: '1',
+  }
+);
+const page = pagination.getCurrentPage();
+
+
+fetchFavoritesMovies(page).then(movies => {
+  renderFavoritesMovies(movies)
+  pagination.reset(movies.total_pages);
+ 
+})
+
+pagination.on('afterMove', eventFavoritePagination);
+ 
+function eventFavoritePagination(event) {
+    console.log(event.page);
+    fetchFavoritesMovies(event.page).then(movies => {
+      resetFavoritesMovies();
+      renderFavoritesMovies(movies);
+      // console.log(movies.results);
+    }
+
+    )
+  }
 
 function getGenres(arrayId) {
   const arr = [];
@@ -45,7 +76,11 @@ function renderGallery(movies) {
     .join('');
 }
 
-fetchFavoritesMovies().then(data => {
-  preloader();
-  refs.gallery.insertAdjacentHTML('beforeend', renderGallery(data.results));
-});
+function renderFavoritesMovies(movies) {
+  refs.gallery.insertAdjacentHTML('beforeend', renderGallery(movies.results));
+  
+};
+
+function resetFavoritesMovies() {
+  refs.gallery.innerHTML = '';
+}
